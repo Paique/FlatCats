@@ -1,0 +1,60 @@
+package net.paiique.flatcat.custom.entity.client.renderer;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import net.paiique.flatcat.custom.entity.common.AbstractFlatCatEntity;
+import org.joml.Matrix4f;
+
+public class GenericFlatCatEntityRenderer<T extends AbstractFlatCatEntity> extends EntityRenderer<T> {
+
+    public GenericFlatCatEntityRenderer(EntityRendererProvider.Context pContext) {
+        super(pContext);
+    }
+
+    @Override
+    public void render(T pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
+        ResourceLocation catImage = pEntity.getCatImage();
+        if (catImage == null) throw new IllegalStateException("Cat image is null");
+
+        if (pEntity.isDeadOrDying()) catImage = pEntity.getDeathImage();
+
+        pPoseStack.pushPose();
+        try {
+            pPoseStack.translate(0.0, 0.5, 0.0);
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.player != null) {
+                Vec3 entityPos = pEntity.position();
+                Vec3 playerPos = mc.player.position();
+
+                double dx = playerPos.x - entityPos.x;
+                double dz = playerPos.z - entityPos.z;
+
+                float rotationYaw = (float) (Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
+                pPoseStack.mulPose(Axis.YP.rotationDegrees(-rotationYaw));
+            }
+            VertexConsumer vertexConsumer = pBuffer.getBuffer(RenderType.entityCutout(catImage));
+            Matrix4f matrix = pPoseStack.last().pose();
+
+            vertexConsumer.vertex(matrix, -0.5F, 0.0F, 0.0F).color(255, 255, 255, 255).uv(0.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(0, 1, 0).endVertex();
+            vertexConsumer.vertex(matrix, 0.5F, 0.0F, 0.0F).color(255, 255, 255, 255).uv(1.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(0, 1, 0).endVertex();
+            vertexConsumer.vertex(matrix, 0.5F, 1.0F, 0.0F).color(255, 255, 255, 255).uv(1.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(0, 1, 0).endVertex();
+            vertexConsumer.vertex(matrix, -0.5F, 1.0F, 0.0F).color(255, 255, 255, 255).uv(0.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(0, 1, 0).endVertex();
+        } finally { pPoseStack.popPose(); }
+        super.render(pEntity, pEntityYaw, pPartialTick, pPoseStack, pBuffer, pPackedLight);
+    }
+
+    @Override
+    public ResourceLocation getTextureLocation(AbstractFlatCatEntity pEntity) {
+        return null;
+    }
+}
