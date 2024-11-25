@@ -49,7 +49,9 @@ public class GenericFlatCatEntityRenderer<T extends AbstractFlatCatEntity> exten
                 double dz = playerPos.z - entityPos.z;
 
                 float rotationYaw = (float) (Mth.atan2(dz, dx) * (180F / Math.PI)) - 90F;
+                float rotationPitch = (float) (Mth.atan2(entityPos.y - playerPos.y, Math.sqrt(dx * dx + dz * dz)) * (180F / Math.PI));
                 pPoseStack.mulPose(Axis.YP.rotationDegrees(-rotationYaw));
+                pPoseStack.mulPose(Axis.XP.rotationDegrees(rotationPitch >= 90 ? 90 : rotationPitch));
             }
             VertexConsumer vertexConsumer = pBuffer.getBuffer(RenderType.entityCutout(catImage));
             Matrix4f matrix = pPoseStack.last().pose();
