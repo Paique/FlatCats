@@ -30,7 +30,16 @@ public class GenericFlatCatEntityRenderer<T extends AbstractFlatCatEntity> exten
 
         pPoseStack.pushPose();
         try {
-            pPoseStack.translate(0.0, 0.5, 0.0);
+            double motionX = pEntity.getDeltaMovement().x;
+            double motionZ = pEntity.getDeltaMovement().z;
+            boolean isWalking = Math.abs(motionX) > 0.01 || Math.abs(motionZ) > 0.01;
+
+            if (pEntity.onGround() && isWalking) {
+                float walkCycle = (float) (Math.sin(pEntity.tickCount * 0.5) * 0.1);
+                float scale = pEntity.getScale();
+                pPoseStack.scale(scale, scale + walkCycle, scale);
+            }
+
             Minecraft mc = Minecraft.getInstance();
             if (mc.player != null) {
                 Vec3 entityPos = pEntity.position();
