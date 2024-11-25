@@ -13,6 +13,6 @@ public class LongFlatCatEntity extends AbstractFlatCatEntity {
 
     @Override
     public ResourceLocation getCatImage() {
-        return new ResourceLocation(FlatCat.MODID ,"textures/long.png");
+        return new ResourceLocation(FlatCat.MODID ,"textures/entity/long.png");
     }
 }
