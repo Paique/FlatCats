@@ -30,6 +30,7 @@ public class GenericFlatCatEntityRenderer<T extends AbstractFlatCatEntity> exten
 
         pPoseStack.pushPose();
         try {
+            pPoseStack.scale(3, 3, 3);
             double motionX = pEntity.getDeltaMovement().x;
             double motionZ = pEntity.getDeltaMovement().z;
             boolean isWalking = Math.abs(motionX) > 0.01 || Math.abs(motionZ) > 0.01;

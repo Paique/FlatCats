@@ -36,7 +36,7 @@ public class ModEntityTypes {
     public static RegistryObject<EntityType<LongFlatCatEntity>> LONG_CAT = registerFlatCatEntity(LongFlatCatEntity::new, "long_cat");
 
     public static <T extends AbstractFlatCatEntity> RegistryObject<EntityType<T>> registerFlatCatEntity(EntityType.EntityFactory<T> factory, String name) {
-        return ENTITY.register(name, () -> EntityType.Builder.of(factory, MobCategory.MISC).sized(0.6F, 0.7F).build(name));
+        return ENTITY.register(name, () -> EntityType.Builder.of(factory, MobCategory.MISC).sized(3F, 3F).build(name));
     }
 
     public static void register(IEventBus eventBus) {
