@@ -1,15 +1,11 @@
 package net.paiique.flatcat;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.ModelEvent;
-import net.minecraftforge.client.model.obj.ObjLoader;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.paiique.flatcat.custom.entity.client.renderer.GenericCat3dEntityRenderer;
 import net.paiique.flatcat.custom.entity.client.renderer.GenericFlatCatEntityRenderer;
 import net.paiique.flatcat.registry.ModEntityTypes;
 

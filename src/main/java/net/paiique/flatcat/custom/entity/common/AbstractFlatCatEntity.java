@@ -1,5 +1,7 @@
 package net.paiique.flatcat.custom.entity.common;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -24,8 +26,11 @@ import net.paiique.flatcat.FlatCat;
 import org.jetbrains.annotations.Nullable;
 
 
+@Setter
+@Getter
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractFlatCatEntity extends PathfinderMob {
+    float imageScale = 3F;
 
     protected AbstractFlatCatEntity(EntityType<? extends PathfinderMob> pEntityType, Level pLevel) {
         super(pEntityType, pLevel);

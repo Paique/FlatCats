@@ -2,6 +2,7 @@ package net.paiique.flatcat.custom.entity.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.logging.LogUtils;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,13 +25,13 @@ public class GenericFlatCatEntityRenderer<T extends AbstractFlatCatEntity> exten
     @Override
     public void render(T pEntity, float pEntityYaw, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight) {
         ResourceLocation catImage = pEntity.getCatImage();
-        if (catImage == null) throw new IllegalStateException("Cat image is null");
-
+        float imageScale = pEntity.getImageScale();
+        if (catImage == null) throw new IllegalStateException("Cat image is null, please contact the mod author: https://github.com/Paique/FlatCats/issues");
         if (pEntity.isDeadOrDying()) catImage = pEntity.getDeathImage();
 
-        pPoseStack.pushPose();
         try {
-            pPoseStack.scale(3, 3, 3);
+            pPoseStack.pushPose();
+            pPoseStack.scale(imageScale, imageScale, imageScale);
             double motionX = pEntity.getDeltaMovement().x;
             double motionZ = pEntity.getDeltaMovement().z;
             boolean isWalking = Math.abs(motionX) > 0.01 || Math.abs(motionZ) > 0.01;
@@ -61,7 +62,12 @@ public class GenericFlatCatEntityRenderer<T extends AbstractFlatCatEntity> exten
             vertexConsumer.vertex(matrix, 0.5F, 0.0F, 0.0F).color(255, 255, 255, 255).uv(1.0F, 1.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(0, 1, 0).endVertex();
             vertexConsumer.vertex(matrix, 0.5F, 1.0F, 0.0F).color(255, 255, 255, 255).uv(1.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(0, 1, 0).endVertex();
             vertexConsumer.vertex(matrix, -0.5F, 1.0F, 0.0F).color(255, 255, 255, 255).uv(0.0F, 0.0F).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(pPackedLight).normal(0, 1, 0).endVertex();
-        } finally { pPoseStack.popPose(); }
+        } catch (Exception e) {
+            LogUtils.getLogger().warn("Failed to render flat cat entity: {}", pEntity.getClass().getSimpleName(), e);
+            LogUtils.getLogger().info("Please report this issue to the mod author: https://github.com/Paique/FlatCats/issues");
+        } finally {
+            pPoseStack.popPose();
+        }
         super.render(pEntity, pEntityYaw, pPartialTick, pPoseStack, pBuffer, pPackedLight);
     }
 
