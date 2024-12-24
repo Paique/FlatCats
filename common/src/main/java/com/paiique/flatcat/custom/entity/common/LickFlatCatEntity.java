@@ -2,14 +2,13 @@ package com.paiique.flatcat.custom.entity.common;
 
 import com.paiique.flatcat.FlatCats;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 public class LickFlatCatEntity extends AbstractFlatCatEntity {
 
 
-    public LickFlatCatEntity(EntityType<? extends LickFlatCatEntity> pEntityType, World pLevel) {
+    public LickFlatCatEntity(EntityType<? extends AbstractFlatCatEntity> pEntityType, World pLevel) {
         super(pEntityType, pLevel);
     }
 

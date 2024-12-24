@@ -2,7 +2,6 @@ package com.paiique.flatcat.registry.common;
 
 import com.paiique.flatcat.FlatCats;
 import com.paiique.flatcat.custom.entity.common.*;
-import dev.architectury.event.events.common.LifecycleEvent;
 import dev.architectury.registry.level.entity.EntityAttributeRegistry;
 import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -13,10 +12,14 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.paiique.flatcat.FlatCats.MANAGER;
 
 public class ModEntities {
     public static final Registrar<EntityType<?>> ENTITIES = MANAGER.get().get(Registries.ENTITY_TYPE);
+    public static List<Object> FLAT_CATS = new ArrayList<>();
 
     public static RegistrySupplier<EntityType<AngryFlatCatEntity>> ANGRY_FLAT_CAT = registerCat("angry_cat", AngryFlatCatEntity::new, SpawnGroup.AMBIENT);
     public static RegistrySupplier<EntityType<AnnoyedFlatCatEntity>> ANNOYED_FLAT_CAT = registerCat("annoyed_cat", AnnoyedFlatCatEntity::new, SpawnGroup.AMBIENT);
@@ -38,32 +41,18 @@ public class ModEntities {
     public static RegistrySupplier<EntityType<LickFlatCatEntity>> LICK_FLAT_CAT = registerCat("lick_cat", LickFlatCatEntity::new, SpawnGroup.AMBIENT);
     public static RegistrySupplier<EntityType<ChristmasCatEntity>> CHRISTMAS_CAT = registerCat("christmas_cat", ChristmasCatEntity::new, SpawnGroup.AMBIENT);
 
-    public static void init() {}
+    public static void init() {
+    }
 
     private static <E extends Entity> RegistrySupplier<EntityType<E>> registerCat(String plainID, EntityType.EntityFactory<E> entity, SpawnGroup group) {
         Identifier id = Identifier.of(FlatCats.MOD_ID, plainID);
-        return ENTITIES.register(id, () -> EntityType.Builder.create(entity, group).dimensions(1, 1).build(RegistryKey.of(ENTITIES.key(), id)));
+         RegistrySupplier<EntityType<E>> entityRegistry = ENTITIES.register(id, () -> EntityType.Builder.create(entity, group).dimensions(1, 1).build(RegistryKey.of(ENTITIES.key(), id)));
+        FLAT_CATS.add(entityRegistry);
+        return entityRegistry;
     }
 
+    @SuppressWarnings("unchecked")
     public static void registerAttributes() {
-        EntityAttributeRegistry.register(ANGRY_FLAT_CAT, AngryFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(ANNOYED_FLAT_CAT, AnnoyedFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(ANOTHER_ANNOYED_FLAT_CAT, AnotherAnnoyedFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(SURPRISED_FLAT_CAT, SurprisedFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(ANOTHER_SURPRISED_FLAT_CAT, AnotherSurprisedFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(CLOSER_INSPECTION_FLAT_CAT, CloserInspectionFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(CRYING_FLAT_CAT, CryingFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(EMPTY_BRAIN_FLAT_CAT, EmptyBrainFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(GERALD_FLAT_CAT, GeraldFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(HAPPY_FLAT_CAT, HappyFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(LONG_FLAT_CAT, LongFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(LOOK_INSIDE_FLAT_CAT, LookInsideFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(SHUT_THE_FRICK_UP_FLAT_CAT, ShutTheFrickUpFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(STARING_FLAT_CAT, StaringFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(THOUSAND_YARD_FLAT_CAT, ThousandYardFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(WHATS_THAT_FLAT_CAT, WhatsThatFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(YOURE_DEAD_FLAT_CAT, YoureDeadFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(LICK_FLAT_CAT, LickFlatCatEntity.createAttributes());
-        EntityAttributeRegistry.register(CHRISTMAS_CAT, ChristmasCatEntity.createAttributes());
+        FLAT_CATS.forEach(entityType -> EntityAttributeRegistry.register((RegistrySupplier<EntityType<? extends AbstractFlatCatEntity>>) entityType, AbstractFlatCatEntity.createAttributes()));
     }
 }
