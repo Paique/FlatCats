@@ -1,0 +1,38 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+issueTrackerURL = "https://github.com/Paique/FlatCats/issues"
+license = "Mozilla Public License 2.0"
+
+[[mods]]
+modId = "flatcat"
+version = "${version}"
+displayName = "Flat Cats"
+authors = "Paique"
+description = '''
+A mod about flat cat images.
+'''
+logoFile = "assets/flatcat/icon.png"
+
+[[dependencies.flatcat]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.flatcat]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.4,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.flatcat]]
+modId = "architectury"
+type = "required"
+versionRange = "[15.0.1,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[mixins]]
+config = "flatcat.mixins.json"
