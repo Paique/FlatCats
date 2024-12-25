@@ -5,16 +5,14 @@ import com.paiique.flatcat.custom.entity.client.renderer.GenericRenderState;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.Leashable;
 import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.attribute.AttributeContainer;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -28,7 +26,7 @@ import java.util.function.Supplier;
 
 @Setter
 @Getter
-public abstract class AbstractFlatCatEntity extends PathAwareEntity {
+public abstract class AbstractFlatCatEntity extends PathAwareEntity implements Leashable {
     private GenericRenderState renderState;
     long tickCount = 0;
     float imageScale = 2.0F;
@@ -47,7 +45,7 @@ public abstract class AbstractFlatCatEntity extends PathAwareEntity {
     }
 
     protected void addBehaviourGoals() {
-        this.goalSelector.add(2, new FleeEntityGoal<>(this, PlayerEntity.class, 6.0F, 1.0D, 1.2D));
+        this.goalSelector.add(2, new FleeEntityGoal<>(this, PlayerEntity.class, 3.0F, 1.0D, 1.2D));
         this.targetSelector.add(1, (new RevengeGoal(this)).setGroupRevenge(AbstractFlatCatEntity.class));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, CreeperEntity.class, true));
     }
