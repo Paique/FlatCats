@@ -50,8 +50,8 @@ public class GenericFlatCatEntityRenderer<T extends AbstractFlatCatEntity> exten
             boolean isWalking = Math.abs(motionX) > 0.01 || Math.abs(motionZ) > 0.01;
 
             if (isWalking) {
-                double walkCycle = (float) (Math.sin(state.tickCount + 0.1) * 0.5) * 0.1; // Smooth walking animation
-                matrices.scale(1.0F, (float) (1.0F + walkCycle), 1.0F); // Adjust scale dynamically
+                double walkCycle = (float) (Math.sin(state.tickCount + 0.1) * 0.5) * 0.1;
+                matrices.scale(1.0F, (float) (1.0F + walkCycle), 1.0F);
             }
 
             MinecraftClient mc = MinecraftClient.getInstance();
@@ -65,7 +65,7 @@ public class GenericFlatCatEntityRenderer<T extends AbstractFlatCatEntity> exten
                 float rotationYaw = (float) (Math.atan2(dz, dx) * (180F / Math.PI)) - 90F;
                 float rotationPitch = (float) (Math.atan2(entityPos.y - playerPos.y, Math.sqrt(dx * dx + dz * dz)) * (180F / Math.PI));
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-rotationYaw));
-                float clampedPitch = Math.min(90.0F, Math.max(-90.0F, rotationPitch));
+                float clampedPitch = Math.min(90.0F, Math.max(-20.0F, rotationPitch));
                 matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(clampedPitch));
             }
             VertexConsumer vertexConsumer = vertexConsumers.getBuffer(RenderLayer.getEntityCutout(catImage));
