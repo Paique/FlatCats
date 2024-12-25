@@ -16,7 +16,7 @@ public class ChristmasCatEntity extends AbstractFlatCatEntity {
 
     @Override
     public Identifier getCatImage() {
-        return Identifier.of(FlatCats.MOD_ID ,"textures/entity/staringannoyed2.png");
+        return Identifier.of(FlatCats.MOD_ID ,"textures/entity/christmas.png");
     }
 
     @Override
