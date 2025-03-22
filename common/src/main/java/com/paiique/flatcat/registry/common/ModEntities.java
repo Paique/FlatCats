@@ -7,6 +7,7 @@ import dev.architectury.registry.registries.Registrar;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKey;
@@ -14,11 +15,11 @@ import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
-import static com.paiique.flatcat.FlatCats.MANAGER;
-
+@SuppressWarnings("deprecation")
 public class ModEntities {
-    public static final Registrar<EntityType<?>> ENTITIES = MANAGER.get().get(Registries.ENTITY_TYPE);
+    public static final Registrar<EntityType<?>> ENTITIES = FlatCats.MANAGER.get().get(Registries.ENTITY_TYPE);
     public static List<Object> FLAT_CATS = new ArrayList<>();
 
     public static RegistrySupplier<EntityType<AngryFlatCatEntity>> ANGRY_FLAT_CAT = registerCat("angry_cat", AngryFlatCatEntity::new, SpawnGroup.AMBIENT);
@@ -53,6 +54,8 @@ public class ModEntities {
 
     @SuppressWarnings("unchecked")
     public static void registerAttributes() {
-        FLAT_CATS.forEach(entityType -> EntityAttributeRegistry.register((RegistrySupplier<EntityType<? extends AbstractFlatCatEntity>>) entityType, AbstractFlatCatEntity.createAttributes()));
+        FLAT_CATS.forEach(entityType -> {
+            EntityAttributeRegistry.register((Supplier<? extends EntityType<? extends LivingEntity>>) entityType, AbstractFlatCatEntity.createAttributes());
+        });
     }
 }

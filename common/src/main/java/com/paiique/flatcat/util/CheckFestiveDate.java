@@ -1,7 +1,6 @@
 package com.paiique.flatcat.util;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class CheckFestiveDate {
     static Calendar cal = Calendar.getInstance();
